@@ -18,4 +18,8 @@ public class SecurityService {
                 !authenticationTrustResolver.isAnonymous(authentication);
     }
 
+    public String getLoginUser(){
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
+
 }
