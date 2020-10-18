@@ -37,7 +37,7 @@ public class RegistrationController {
            bindingResult.rejectValue("password", "registration.differentPasswords");
         } else if(!bindingResult.hasErrors()){
             registrationService.registerUser(registrationUser);
-            return "login";
+            return "redirect:login";
         }
         return "registration";
     }

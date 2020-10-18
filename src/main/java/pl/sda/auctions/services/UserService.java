@@ -39,7 +39,7 @@ public class UserService {
     }
 
     public void createUser(String name, String email, String password, Role role) {
-        log.info("entering createUser...{}", email);
+        log.info("Entering createUser(email = {})", email);
         var user = new User(
                 null,
                 email,
@@ -49,7 +49,7 @@ public class UserService {
                 role
 
         );
-        log.info("user {}", user);
+        log.info("Creating user: {}", user);
         userRepository.save(user);
     }
 }
