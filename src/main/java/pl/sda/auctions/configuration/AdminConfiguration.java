@@ -27,7 +27,7 @@ public class AdminConfiguration {
 
     @PostConstruct
     public void initUsers() {
-        if (!userService.checkIfUserExistsEmail(ADMIN_EMAIL)) {
+        if (!userService.checkIfUserExists(ADMIN_EMAIL)) {
             logger.info("Administrator account doesn't exist. Creating new one.");
             userService.createUser(
                     "administrator",
