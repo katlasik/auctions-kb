@@ -60,13 +60,19 @@ class RegistrationControllerTest {
                 .param("name", "test")
                 .param("email", "test@test.pl")
                 .param("password", "test123")
-                .param("passwordRepeat", "test123")
+                .param("repeatPassword", "test123")
                 .with(csrf())
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED))
-                .andExpect(status().isOk());
+                .andExpect(status().isFound());
 
 
         verify(userService, times(1)).checkIfUserExistsEmail("test@test.pl");
         verify(userService, times(1)).checkIfUserExistsName("test");
+        verify(userService, times(1)).createUser(
+                "test",
+                "test@test.pl",
+                "test123",
+                Role.USER
+        );
     }
 }
