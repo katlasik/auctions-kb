@@ -4,14 +4,15 @@
 <body>
 <head th:replace="fragments/header.html :: header"></head>
 <main role="main">
-
     <div class="jumbotron">
         <div class="container">
             <h1 class="display-3" th:text="#{welcome.auctions}"></h1>
-            <p><a sec:authorize="!isAuthenticated()" class="btn btn-primary btn-lg" th:href="@{/login}" th:text="#{welcome.login}" role="button"></a></p>
+            <div class="container-fluid row" style="display: flex; justify-content: flex-start">
+                <p style="padding: 8px"><a sec:authorize="!isAuthenticated()" class="btn btn-primary btn-lg" th:href="@{/login}" th:text="#{welcome.login}" role="button"></a></p>
+                <p style="padding: 8px"><a sec:authorize="!isAuthenticated()" class="btn btn-primary btn-lg" th:href="@{/registration}" th:text="#{welcome.registration}" role="button"></a></p>
+            </div>
         </div>
     </div>
-
 </main>
 <footer th:replace="fragments/footer.html :: footer"></footer>
 </body>
