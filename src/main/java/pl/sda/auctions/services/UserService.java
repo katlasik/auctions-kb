@@ -1,30 +1,37 @@
 package pl.sda.auctions.services;
 
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import pl.sda.auctions.model.Role;
 import pl.sda.auctions.model.User;
 import pl.sda.auctions.repository.UserRepository;
 
+import java.util.Optional;
+
+@Slf4j
 @Service
+@AllArgsConstructor
 public class UserService {
 
-    private UserRepository userRepository;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(
-            UserRepository userRepository,
-            PasswordEncoder passwordEncoder
-    ) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+    public Optional<User> findByEmail(String email){
+        return userRepository.findByEmail(email);
     }
 
-    public boolean checkIfUserExists(String email) {
+    public boolean checkIfUserExistsEmail(String email) {
         return userRepository.findByEmail(email).isPresent();
     }
 
+    public boolean checkIfUserExistsName(String name) {
+        return userRepository.findByName(name).isPresent();
+    }
+
     public void createUser(String name, String email, String password, Role role) {
+        log.info("Entering createUser(email = {})", email);
         var user = new User(
                 null,
                 email,
@@ -34,6 +41,7 @@ public class UserService {
                 role
 
         );
+        log.info("Creating user: {}", user);
         userRepository.save(user);
     }
 }
