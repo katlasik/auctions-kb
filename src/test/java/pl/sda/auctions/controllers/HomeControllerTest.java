@@ -78,11 +78,11 @@ class HomeControllerTest {
     @WithMockUser(username = "name@gmail.com", password = "pass123")
     void showProfile() throws Exception {
 
-        User user = new pl.sda.auctions.model.User(2L, "name@gmail.com", "pass123", "Username", true, Role.USER);
+        User user = new User(2L, "name@gmail.com", "pass123", "nextUser", true, Role.USER);
 
         Mockito.when(userRepository.findByEmail("name@gmail.com")).thenReturn(Optional.of(user));
         mockMvc.perform(get("/profile")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("Username")))
+                .andExpect(content().string(containsString("nextUser")))
                 .andExpect(content().string(containsString("name@gmail.com")));
     }
 }
