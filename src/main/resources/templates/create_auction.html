@@ -1,0 +1,57 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html :: head(title='auction.title')"></head>
+
+<body>
+<main role="main" class="container">
+    <div class="container-fluid d-flex h-100 p-3 mx-auto flex-column justify-content-center">
+        <form method="post" action="/create_auction" th:object="${auction}">
+            <h1 th:text="#{auction.create}"></h1>
+            <p>
+                <label for="title" class="sr-only"><h2 th:text="#{auction.name}"></h2></label>
+                <input th:field="*{title}" type="text" id="title" name="title" class="form-control"
+                       th:placeholder="#{auction.name}" required  autofocus>
+            </p>
+            <div class="alert alert-danger" th:each="error: ${#fields.errors('title')}"
+                 th:text="${error}"></div>
+            <p>
+                <label for="description" class="sr-only"><h2 th:text="#{auction.description}"></h2></label>
+                <input th:field="*{description}" type="text" id="description" name="description" class="form-control" th:placeholder="#{auction.description}"
+                       required>
+            </p>
+            <div class="alert alert-danger" th:each="error: ${#fields.errors('description')}"
+                 th:text="${error}"></div>
+            <h2 th:text="#{auction.primaryPrice}"></h2>
+            <div class="row" style="display: flex; justify-content: space-between; padding-bottom: 16px">
+                <div class="col" style="width: fit-content">
+                    <div class="input-group">
+                        <input th:field="*{primaryPrice}" type="number" step="any" id="primaryPrice" name="primaryPrice" class="form-control"
+                               th:placeholder="#{auction.primaryPrice}" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">$</span>
+                            <span class="input-group-text">0.00</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-danger" th:each="error: ${#fields.errors('primaryPrice')}"
+                     th:text="${error}"></div>
+                <div class="col">
+                    <div class="form-check" style="float: right">
+                        <input class="form-check-input" type="checkbox" value="status" id="status" style="height: 20px; width: 20px">
+                        <label for="status" class="form-check-label"><h4 th:text="#{auction.status}" style="padding-left: 8px"></h4></label>
+                    </div>
+                </div>
+            </div>
+            <input
+                    type="hidden"
+                    id="csrf-token"
+                    th:name="${_csrf.parameterName}"
+                    th:value="${_csrf.token}"/>
+            <button class="btn btn-lg btn-primary btn-block" th:text="#{auction.create}" type="submit"></button>
+        </form>
+    </div>
+</main>
+
+<footer th:replace="fragments/footer.html :: footer"></footer>
+</body>
+</html>
