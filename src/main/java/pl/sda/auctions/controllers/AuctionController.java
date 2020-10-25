@@ -15,8 +15,6 @@ import pl.sda.auctions.services.AuctionService;
 import pl.sda.auctions.services.SecurityService;
 
 import javax.validation.Valid;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 
 @Slf4j
 @Controller
@@ -27,22 +25,17 @@ public class AuctionController {
 
     @GetMapping("/create_auction")
     public String getCreateAuction(Model model){
-        if(securityService.userIsLoggedIn()){
-            AuctionDTO auction = new AuctionDTO();
-            model.addAttribute("auction", auction);
-            return "create_auction";
-        } else {
-            return "redirect:login";
-        }
+        AuctionDTO auction = new AuctionDTO();
+        model.addAttribute("auction", auction);
+        return "create_auction";
     }
 
     @PostMapping("/create_auction")
     public String postCreateAuction(@ModelAttribute("auction") @Valid AuctionDTO auction, BindingResult bindingResult) throws Exception {
-        var price = new BigDecimal(auction.getPrimaryPrice()).setScale(2, RoundingMode.HALF_UP);
         if(!bindingResult.hasErrors()){
             var status = auction.isStatus() ? Status.OPENED : Status.CREATED;
             var email = SecurityContextHolder.getContext().getAuthentication().getName();
-            auctionService.createAuction(auction.getTitle(), auction.getDescription(), price, status, email);
+            auctionService.createAuction(auction.getTitle(), auction.getDescription(), auction.getPrimaryPrice(), status, email);
             return "redirect:";
         }
         return "create_auction";

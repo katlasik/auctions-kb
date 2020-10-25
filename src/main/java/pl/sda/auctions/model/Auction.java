@@ -1,6 +1,8 @@
 package pl.sda.auctions.model;
 
 import net.bytebuddy.implementation.bind.annotation.Default;
+import org.springframework.boot.convert.DurationFormat;
+import org.springframework.format.annotation.NumberFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -24,12 +26,14 @@ public class Auction {
     @NotNull
     private String description;
 
-    @PositiveOrZero
+    @DecimalMin("0.00")
     @NotNull
+    @Digits(integer = 10, fraction = 2)
     private BigDecimal primaryPrice;
 
-    @PositiveOrZero
+    @DecimalMin("0.00")
     @NotNull
+    @Digits(integer = 10, fraction = 2)
     private BigDecimal price;
 
     @NotNull
@@ -129,7 +133,6 @@ public class Auction {
                 ", primaryPrice=" + primaryPrice +
                 ", price=" + price +
                 ", status=" + status +
-                ", user=" + user.getEmail() +
                 '}';
     }
 
@@ -138,8 +141,7 @@ public class Auction {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Auction auction = (Auction) o;
-        return Objects.equals(id, auction.id) &&
-                Objects.equals(title, auction.title) &&
+        return  Objects.equals(title, auction.title) &&
                 Objects.equals(description, auction.description) &&
                 Objects.equals(primaryPrice, auction.primaryPrice) &&
                 Objects.equals(price, auction.price) &&

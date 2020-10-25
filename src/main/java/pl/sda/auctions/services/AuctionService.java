@@ -9,6 +9,7 @@ import pl.sda.auctions.repository.AuctionRepository;
 import pl.sda.auctions.repository.UserRepository;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
