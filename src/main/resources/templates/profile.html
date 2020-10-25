@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html :: head(title='profile.title')"> </head>
+<body>
+<head th:replace="fragments/header.html :: header"></head>
+<main role="main">
+    <div class="container-fluid d-flex h-100 p-3 mx-auto flex-column justify-content-center">
+        <div class="container">
+            <label class="text-primary" th:text="#{profile.user}"></label>
+            <label th:text="${user}"></label>
+            <br>
+            <label class="text-primary" th:text="#{profile.email}"></label>
+            <label th:text="${email}"></label>
+            <p></p>
+            <a class="text-danger" th:text="#{profile.changePass}" href="#"></a>
+        </div>
+    </div>
+</main>
+<footer th:replace="fragments/footer.html :: footer"></footer>
+</body>
+</html>
