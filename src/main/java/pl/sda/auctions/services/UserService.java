@@ -1,6 +1,7 @@
 package pl.sda.auctions.services;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -10,8 +11,8 @@ import pl.sda.auctions.repository.UserRepository;
 
 import java.util.Optional;
 
-@Slf4j
 @Service
+@Slf4j
 @AllArgsConstructor
 public class UserService {
 
@@ -43,6 +44,10 @@ public class UserService {
         );
         log.info("Creating user: {}", user);
         userRepository.save(user);
+    }
+
+    public Optional<User> getUserByEmail(String mail){
+        return userRepository.findByEmail(mail);
     }
 }
 
