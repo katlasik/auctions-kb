@@ -37,4 +37,9 @@ public class AuctionService {
         log.info("Creating auction: {}", auction);
         auctionRepository.save(auction);
     }
+
+    public Auction getAuction(Long id){
+        log.info("Entering getAuction(id = {})", id);
+        return auctionRepository.findById(id).get();
+    }
 }

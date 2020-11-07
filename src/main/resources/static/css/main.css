@@ -42,3 +42,7 @@ body {
 .px-8{
     padding: 0px 8px;
 }
+
+.return-button{
+    width: 50px;
+}
