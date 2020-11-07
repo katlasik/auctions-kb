@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head.html :: head(title='auctions.title')"></head>
+<body>
+<main role="main" class="container auctions-container">
+    <div class="container-fluid d-flex flex-column justify-content-center auctions-container">
+        <h2 class="py-8" th:text="#{auctions.title}"></h2>
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col" th:text="#{auction.name}"></th>
+                <th scope="col" th:text="#{auction.description}"></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="auction : ${auctions}">
+                <td th:text="${auction.getTitle()}"></td>
+                <td class="auctions-description" th:text="${auction.getDescription()}"></td>
+            </tr>
+            </tbody>
+        </table>
+        <nav aria-label="Page navigation example" th:if="${auctions.totalPages > 1}">
+            <ul class="pagination">
+                <li class="page-item" th:if="${auctions.hasPrevious()}">
+                    <a class="page-link" th:href="@{/auctions(page=${auctions.number - 1},size=${auctions.size})}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <th:block th:each="i: ${#numbers.sequence(0, auctions.totalPages - 1)}">
+                    <li class="page-item">
+                        <span class="page-link auctions-page-link" th:if="${auctions.number == i}" th:text="${i+1}"></span>
+                        <span th:unless="${auctions.number == i}">
+                            <a class="page-link" th:href="@{/auctions(page=${i},size=${auctions.size})}" th:text="${i+1}"></a>
+                        </span>
+                    </li>
+                </th:block>
+                <li class="page-item" th:if="${auctions.hasNext()}">
+                    <a class="page-link" th:href="@{/auctions(page=${auctions.number+1},size=${auctions.size})}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</main>
+<footer th:replace="fragments/footer.html :: footer"></footer>
+</body>
+</html>
