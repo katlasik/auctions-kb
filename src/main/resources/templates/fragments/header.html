@@ -1,6 +1,7 @@
 <header xmlns:sec="http://www.thymeleaf.org/extras/spring-security" xmlns:th="http://www.thymeleaf.org">
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-link text-white" th:text="#{navigation.sell}" th:href="@{/create_auction}"></a>
+        <a class="navbar-link text-white" style="padding: 0px 8px" th:text="#{navigation.sell}" th:href="@{/create_auction}"></a>
+        <a class="navbar-link text-white" style="padding: 0px 8px" th:text="#{navigation.auctions}" th:href="@{/auctions}"></a>
         <div sec:authorize="isAuthenticated()" class="my-2 my-lg-0 text-white ml-auto">
             <a class="navbar-link text-xl-right text-white" th:text="#{navigation.logout}" th:href="@{/logout}"></a>
             <a class="mr-3 text-white" th:text="#{navigation.profile}" th:href="@{/profile}"></a>

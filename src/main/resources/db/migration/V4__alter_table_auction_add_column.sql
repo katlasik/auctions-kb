@@ -1,0 +1,1 @@
+alter table auction add column created_at datetime default current_timestamp;

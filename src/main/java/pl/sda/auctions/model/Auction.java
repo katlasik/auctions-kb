@@ -1,13 +1,11 @@
 package pl.sda.auctions.model;
 
-import net.bytebuddy.implementation.bind.annotation.Default;
-import org.springframework.boot.convert.DurationFormat;
-import org.springframework.format.annotation.NumberFormat;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -40,6 +38,10 @@ public class Auction {
     @Enumerated(EnumType.STRING)
     private Status status;
 
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    @NotNull
+    private LocalDateTime createdAt;
+
     @ManyToOne
     @NotNull
     private User user;
@@ -60,6 +62,7 @@ public class Auction {
         this.price = Objects.requireNonNull(primaryPrice);
         this.status = Objects.requireNonNull(status);
         this.user = Objects.requireNonNull(user);
+        this.createdAt = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -122,6 +125,10 @@ public class Auction {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
     @Override
