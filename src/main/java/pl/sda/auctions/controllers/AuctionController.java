@@ -10,9 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import pl.sda.auctions.dto.AuctionDTO;
 import pl.sda.auctions.model.Auction;
 import pl.sda.auctions.model.Status;
@@ -40,6 +38,13 @@ public class AuctionController {
         Page<Auction> page = auctionService.getAllAuctions(pageable);
         model.addAttribute("auctions", page);
         return "auctions";
+    }
+
+    @GetMapping("/auctions/{id}")
+    public String getAuction(@PathVariable("id") Long id, Model model){
+        Auction auction = auctionService.getAuction(id);
+        model.addAttribute("auction", auction);
+        return "auction";
     }
 
     @PostMapping("/create_auction")
