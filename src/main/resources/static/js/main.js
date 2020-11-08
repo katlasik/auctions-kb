@@ -1,11 +1,21 @@
-function send(id){
-    var auctionLogDTO = {};
-    auctionLogDTO["newPrice"] = $("#newPrice").val();
+PNotify.success({
+    title: 'Sukces!',
+    text: 'Udało się podbić cenę aukcji!'
+});
+
+function send(){
+
+    const id = $("#auction-id").val()
+
+    var auctionLogDTO = {
+        newPrice: $("#newPrice").val(),
+        auctionId: id
+    };
 
     $.ajax({
-        type : "POST",
+        type : "PUT",
         contentType : "application/json",
-        url : "/auctions/" + id,
+        url : "/auctions/",
         data : JSON.stringify(auctionLogDTO),
         headers: {
             "X-CSRF-TOKEN": $("#csrf-token").val()
@@ -24,4 +34,6 @@ function send(id){
             });
         }
     });
+
+    return false
 }

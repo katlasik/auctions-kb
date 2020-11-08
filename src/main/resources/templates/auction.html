@@ -44,6 +44,11 @@
                                  th:text="${error}"></div>
                             <input
                                     type="hidden"
+                                    id="auction-id"
+                                    th:name="auction-id"
+                                    th:value="${auction.getId()}"/>
+                            <input
+                                    type="hidden"
                                     id="csrf-token"
                                     th:name="${_csrf.parameterName}"
                                     th:value="${_csrf.token}"/>
@@ -52,7 +57,7 @@
                     <div class="col d-inline-flex justify-content-center">
                         <div class="price-offer-form">
                             <button id="priceOfferButton" class="btn btn-lg btn-warning btn-block d-flex justify-content-center"
-                                    form="priceForm" th:disabled="${disablePriceChange}" th:onclick="send(${auction.getId()})">
+                               onclick="send()">
                                 <svg viewBox="0 0 16 16" class="bi bi-chevron-double-up px-8 return-button" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M7.646 2.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 3.707 2.354 9.354a.5.5 0 1 1-.708-.708l6-6z"/>
                                     <path fill-rule="evenodd" d="M7.646 6.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 7.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>

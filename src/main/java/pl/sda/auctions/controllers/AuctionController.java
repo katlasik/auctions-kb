@@ -6,11 +6,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.RequestContextUtils;
 import pl.sda.auctions.dto.AuctionDTO;
@@ -76,20 +78,22 @@ public class AuctionController {
         return "create_auction";
     }
 
-    @PostMapping("/auctions/{id}")
-    public String putPriceOffer(@PathVariable("id") Long id,
-                                @RequestBody @Valid AuctionLogDTO auctionLogDTO,
-                                BindingResult bindingResult, RedirectAttributes redirectAttributes) throws Exception{
-        Auction auction = auctionService.getAuction(id);
+    @PutMapping("/auctions")
+    @ResponseBody
+    public String putPriceOffer(@RequestBody @Valid AuctionLogDTO auctionLogDTO,
+                                BindingResult bindingResult) throws Exception{
+        Auction auction = auctionService.getAuction(auctionLogDTO.getAuctionId());
         auctionLogDTO.setAuctionId(auction.getId());
         auctionLogDTO.setEmail(SecurityContextHolder.getContext().getAuthentication().getName());
         auctionLogDTO.setOldPrice(auction.getPrice());
 
         if(!bindingResult.hasErrors()){
-            auctionService.updatePrice(id, auctionLogDTO);
+            auctionService.updatePrice(auctionLogDTO.getAuctionId(), auctionLogDTO);
             auctionLogService.createAuctionLog(auctionLogDTO);
-            redirectAttributes.addAttribute("id", id);
+            return "Sukces!!!";
+        } else {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "Zła cena");
         }
-        return "redirect:/auctions/{id}";
     }
 }
