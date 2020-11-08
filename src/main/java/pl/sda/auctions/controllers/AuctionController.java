@@ -11,20 +11,30 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import pl.sda.auctions.dto.AuctionDTO;
+import pl.sda.auctions.dto.AuctionLogDTO;
 import pl.sda.auctions.model.Auction;
+import pl.sda.auctions.model.AuctionLog;
 import pl.sda.auctions.model.Status;
+import pl.sda.auctions.model.User;
+import pl.sda.auctions.services.AuctionLogService;
 import pl.sda.auctions.services.AuctionService;
 import pl.sda.auctions.services.SecurityService;
+import pl.sda.auctions.services.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.util.Map;
 
 @Slf4j
 @Controller
 @RequiredArgsConstructor
 public class AuctionController {
     private final AuctionService auctionService;
-    private final SecurityService securityService;
+    private final AuctionLogService auctionLogService;
 
     @GetMapping("/create_auction")
     public String getCreateAuction(Model model){
@@ -42,8 +52,16 @@ public class AuctionController {
 
     @GetMapping("/auctions/{id}")
     public String getAuction(@PathVariable("id") Long id, Model model){
+        var result = auctionLogService.checkIfUserCanChangePrice(id);
+        model.addAttribute("disablePriceChange", result);
+
         Auction auction = auctionService.getAuction(id);
         model.addAttribute("auction", auction);
+
+        AuctionLogDTO auctionLogDTO = new AuctionLogDTO(auction.getPrice(), auction.getPrice().add(BigDecimal.ONE),
+                SecurityContextHolder.getContext().getAuthentication().getName(), id);
+
+        model.addAttribute("auctionLogDTO", auctionLogDTO);
         return "auction";
     }
 
@@ -56,5 +74,22 @@ public class AuctionController {
             return "redirect:";
         }
         return "create_auction";
+    }
+
+    @PostMapping("/auctions/{id}")
+    public String putPriceOffer(@PathVariable("id") Long id,
+                                @RequestBody @Valid AuctionLogDTO auctionLogDTO,
+                                BindingResult bindingResult, RedirectAttributes redirectAttributes) throws Exception{
+        Auction auction = auctionService.getAuction(id);
+        auctionLogDTO.setAuctionId(auction.getId());
+        auctionLogDTO.setEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        auctionLogDTO.setOldPrice(auction.getPrice());
+
+        if(!bindingResult.hasErrors()){
+            auctionService.updatePrice(id, auctionLogDTO);
+            auctionLogService.createAuctionLog(auctionLogDTO);
+            redirectAttributes.addAttribute("id", id);
+        }
+        return "redirect:/auctions/{id}";
     }
 }

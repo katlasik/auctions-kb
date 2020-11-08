@@ -1,16 +1,21 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head th:replace="fragments/head.html :: head(title='auctions.title')"></head>
 <body>
 <head th:replace="fragments/header.html :: header"></head>
-<main role="main" class="container" style="max-width: 100% !important; width: 100%">
+<main role="main" class="container auctions-container">
     <div class="container-fluid d-flex flex-column justify-content-center auctions-container">
-        <h2 class="px-8 py-2" th:text="#{auction.auctionDetails}"></h2>
+        <h2 class="py-2" th:text="#{auction.auctionDetails}"></h2>
         <div class="card text-center">
             <div class="card-header navbar-dark text-white bg-dark">
                 <h3 th:text="${auction.getTitle()}"></h3>
             </div>
             <div class="card-body text-dark">
+                <div class=" card-title d-inline-flex justify-content-center">
+                    <h4 class="px-8" th:text="#{auction.actualPrice}"></h4>
+                    <h4 class="px-3 font-weight-bold" th:text="${auction.getPrice()}"></h4>
+                    <h4 class="font-weight-bold" th:text="#{auction.currency}"></h4>
+                </div>
                 <h5 class="card-title" th:text="${auction.getDescription()}"></h5>
                 <div class="card-text">
                     <div class="col d-inline-flex justify-content-center">
@@ -21,6 +26,40 @@
                     <div class="col d-inline-flex justify-content-center">
                         <p class="px-8" th:text="#{auction.user}"></p>
                         <p class="px-8 font-weight-bold" th:text="${auction.getUser().getName()}"></p>
+                    </div>
+                </div>
+                <div sec:authorize="isAuthenticated()">
+                    <div class="col d-inline-flex justify-content-center">
+                        <form id="priceForm" class="price-offer-form" method="post" th:action="@{/auctions/{id}(id=${auction.getId()})}"
+                              th:object="${auctionLogDTO}">
+                            <div class="input-group">
+                                <input th:field="*{newPrice}" type="number" step="any" id="newPrice"
+                                       name="newPrice" class="form-control" th:min="${auctionLogDTO.getOldPrice()}+1" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text">$</span>
+                                    <span class="input-group-text">0.00</span>
+                                </div>
+                            </div>
+                            <div class="alert alert-danger" th:each="error: ${#fields.errors('newPrice')}"
+                                 th:text="${error}"></div>
+                            <input
+                                    type="hidden"
+                                    id="csrf-token"
+                                    th:name="${_csrf.parameterName}"
+                                    th:value="${_csrf.token}"/>
+                        </form>
+                    </div>
+                    <div class="col d-inline-flex justify-content-center">
+                        <div class="price-offer-form">
+                            <button id="priceOfferButton" class="btn btn-lg btn-warning btn-block d-flex justify-content-center"
+                                    form="priceForm" th:disabled="${disablePriceChange}" th:onclick="send(${auction.getId()})">
+                                <svg viewBox="0 0 16 16" class="bi bi-chevron-double-up px-8 return-button" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" d="M7.646 2.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 3.707 2.354 9.354a.5.5 0 1 1-.708-.708l6-6z"/>
+                                    <path fill-rule="evenodd" d="M7.646 6.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 7.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>
+                                </svg>
+                                <p class="p-0 m-0" th:text="#{auction.offerPrice}"></p>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

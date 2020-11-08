@@ -5,8 +5,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import pl.sda.auctions.dto.AuctionLogDTO;
 import pl.sda.auctions.model.Auction;
+import pl.sda.auctions.model.AuctionLog;
 import pl.sda.auctions.model.Status;
+import pl.sda.auctions.model.User;
+import pl.sda.auctions.repository.AuctionLogRepository;
 import pl.sda.auctions.repository.AuctionRepository;
 import pl.sda.auctions.repository.UserRepository;
 
@@ -41,5 +45,12 @@ public class AuctionService {
     public Auction getAuction(Long id){
         log.info("Entering getAuction(id = {})", id);
         return auctionRepository.findById(id).get();
+    }
+
+    public void updatePrice(Long id, AuctionLogDTO auctionLogDTO){
+        log.info("Entering updatePrice(id = {}, newPrice = {})", id, auctionLogDTO.getNewPrice());
+        Auction auction = auctionRepository.findById(id).get();
+        auction.setPrice(auctionLogDTO.getNewPrice());
+        auctionRepository.save(auction);
     }
 }
