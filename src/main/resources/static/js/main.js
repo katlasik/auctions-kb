@@ -1,10 +1,4 @@
-PNotify.success({
-    title: 'Sukces!',
-    text: 'Udało się podbić cenę aukcji!'
-});
-
 function send(){
-
     const id = $("#auction-id").val()
 
     var auctionLogDTO = {
@@ -21,19 +15,13 @@ function send(){
             "X-CSRF-TOKEN": $("#csrf-token").val()
         },
         dataType : 'json',
-        success : function(data) {
-            new PNotify.success({
-                title: 'Sukces!',
-                text: 'Udało się podbić cenę aukcji!'
-            });
-        },
-        error : function (data){
-            PNotify.error({
+        success : PNotify.success({
+            title: 'Sukces!',
+            text: 'Udało się podbić cenę aukcji!'
+        }),
+        error : PNotify.error({
                title: 'Błąd!',
                text: 'Nie udało się podbić ceny aukcji, spróbuj ponownie!'
-            });
-        }
+        }),
     });
-
-    return false
 }

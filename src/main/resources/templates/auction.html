@@ -5,7 +5,7 @@
 <head th:replace="fragments/header.html :: header"></head>
 <main role="main" class="container auctions-container">
     <div class="container-fluid d-flex flex-column justify-content-center auctions-container">
-        <h2 class="py-2" th:text="#{auction.auctionDetails}"></h2>
+        <h2 class="px-8 py-2" th:text="#{auction.auctionDetails}"></h2>
         <div class="card text-center">
             <div class="card-header navbar-dark text-white bg-dark">
                 <h3 th:text="${auction.getTitle()}"></h3>
@@ -57,7 +57,7 @@
                     <div class="col d-inline-flex justify-content-center">
                         <div class="price-offer-form">
                             <button id="priceOfferButton" class="btn btn-lg btn-warning btn-block d-flex justify-content-center"
-                               onclick="send()">
+                               onclick="send()" th:disabled="${disablePriceChange}">
                                 <svg viewBox="0 0 16 16" class="bi bi-chevron-double-up px-8 return-button" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path fill-rule="evenodd" d="M7.646 2.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 3.707 2.354 9.354a.5.5 0 1 1-.708-.708l6-6z"/>
                                     <path fill-rule="evenodd" d="M7.646 6.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1-.708.708L8 7.707l-5.646 5.647a.5.5 0 0 1-.708-.708l6-6z"/>

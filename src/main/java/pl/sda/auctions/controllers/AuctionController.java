@@ -90,7 +90,7 @@ public class AuctionController {
         if(!bindingResult.hasErrors()){
             auctionService.updatePrice(auctionLogDTO.getAuctionId(), auctionLogDTO);
             auctionLogService.createAuctionLog(auctionLogDTO);
-            return "Sukces!!!";
+            return "redirect:/auctions/" + auctionLogDTO.getAuctionId();
         } else {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "Zła cena");
