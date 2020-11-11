@@ -5,7 +5,7 @@
 <head th:replace="fragments/header.html :: header"></head>
 <main role="main" class="container auctions-container">
     <div class="container-fluid d-flex flex-column justify-content-center auctions-container">
-        <h2 class="py-2" th:text="#{auctions.title}"></h2>
+        <h2 class="py-2 jus" th:text="#{auctions.title}"></h2>
         <table class="table">
             <thead class="thead-dark">
             <tr>
@@ -30,7 +30,7 @@
             </tr>
             </tbody>
         </table>
-        <nav aria-label="Page navigation example" th:if="${auctions.totalPages > 1}">
+        <nav class="d-flex justify-content-between" th:if="${auctions.totalPages > 1}">
             <ul class="pagination">
                 <li class="page-item" th:if="${auctions.hasPrevious()}">
                     <a class="page-link" th:href="@{/auctions(page=${auctions.number - 1},size=${auctions.size})}" aria-label="Previous">

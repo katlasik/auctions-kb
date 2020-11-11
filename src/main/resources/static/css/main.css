@@ -46,3 +46,16 @@ body {
 .return-button{
     width: 50px;
 }
+
+.home-button{
+    color: #fff;
+    width: 20px;
+}
+
+.home-button:hover{
+    color: #1e90ff;
+}
+
+.price-offer-form{
+    width: 300px;
+}
